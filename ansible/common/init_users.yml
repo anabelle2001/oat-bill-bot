@@ -1,0 +1,28 @@
+---
+- name: create user anabelle
+  user:
+    name: anabelle
+    comment: Anabelle VanDenburgh
+    uid: 2000
+    groups: sudo
+    append: yes
+    password: !
+    # update_password: on_create
+    shell: /usr/bin/bash
+    ssh_key_bits: 
+
+
+
+- name: add github ssh keys
+  ansible.posix.authorized_key:
+    user: anabelle
+    state: present
+    key: https://github.com/anabelle2001.keys
+    validate_certs: true
+
+- name: add local ssh keys
+  ansible.posix.authorized_key:
+    user: anabelle
+    state: present
+    key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIzJlg07URJee5ai8r+ltv1LQWwFEwZxqWI3b2ciVofZ root@haswell-server
+    validate_certs: true

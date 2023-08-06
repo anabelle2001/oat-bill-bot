@@ -1,0 +1,14 @@
+- name: Enable serial console in grub config
+  register: grub_config_file #This is used to trigger
+  lineinfile:
+    path: /etc/default/grub
+    line: 'GRUB_CMDLINE_LINUX="console=ttyS0,115200n8"'
+    state: present
+  
+- name: Update GRUB config
+  when: grub_config_file.changed
+  command: update-grub
+
+- name: Reboot machine to apply new GRUB config
+  when: grub_config_file.changed
+  reboot:

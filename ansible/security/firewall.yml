@@ -1,0 +1,16 @@
+#this playbook was adapted from the following post:
+#Petr Stribny, 2021-03-29,  https://stribny.name/blog/ansible-postgresql/
+
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: limit ssh
+    community.general.ufw:
+      rule: limit
+      port: ssh
+    
+  - name: limit postgresql
+    community.general.ufw:
+      rule: limit
+      port: 5432

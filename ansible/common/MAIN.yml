@@ -1,0 +1,17 @@
+---
+- name: Provision a VM
+  hosts: all
+  become: true
+  tasks:
+
+  - name: (1/4) Serial Config - enable interactive debugging
+    import_tasks: ./serial_console.yml
+
+  - name: (2/4) Security Config - soften seiral, harden ssh
+    import_tasks: ./auth.yml
+
+  - name: (3/4) User Config - Create Anabelle and register her SSH Keys
+    import_tasks: ./init_users.yml
+
+  - name: (4/4) Creature Comforts - install fish, ranger, change default shell, etc.
+    import_tasks: ./creature_comforts.yml

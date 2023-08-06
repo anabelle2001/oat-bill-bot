@@ -1,0 +1,28 @@
+---
+- name: install fish interactive shell
+  package:
+    name: fish
+    state: present
+
+- name: install ranger file browser
+  package:
+    name: ranger
+    state: present
+
+- name: set fish as anabelle's default shell
+  user:
+    name: anabelle
+    shell: /usr/bin/fish
+
+- name: set fish prompt
+  ansible.builtin.copy:
+    src: ./fish_prompt.fish
+    dest: /etc/fish/functions/fish_prompt.fish
+    mode: 0755
+    owner: root
+    group: root
+
+- name: enable xterm color support
+  ansible.builtin.lineinfile:
+    line: set TERM "xterm"
+    path: /etc/fish/config.fish

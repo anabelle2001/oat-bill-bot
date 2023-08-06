@@ -1,0 +1,19 @@
+- name: disable ssh password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: 'PasswordAuthentication no'
+    state: present
+
+- name: allow passwordless login on trusted TTYs
+  lineinfile:
+    path: /etc/pam.d/login
+    line: auth sufficient pam_securetty.so
+    insertbefore: BOF
+    state: present
+
+- name: trust ttyS0
+  lineinfile:
+    path: /etc/securetty
+    line: ttyS0
+    state: present
+    create: true

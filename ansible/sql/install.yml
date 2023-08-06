@@ -1,0 +1,18 @@
+#this playbook was adapted from the following post:
+#Petr Stribny, 2021-03-29,  https://stribny.name/blog/ansible-postgresql/
+
+---
+- name: Install prerequisites via APT
+  ansible.builtin.apt:
+    name: 
+    - postgresql
+    - python3-pip
+    - acl         #detroit / become: postgress
+    - whois       #Used for password hashing
+    state: present
+    update_cache: yes
+
+- name: Install psycopg2 via PIP
+  ansible.builtin.pip:
+    name: psycopg2-binary
+    state: present
