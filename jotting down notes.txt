@@ -1,0 +1,22 @@
+URL Searches
+    Committe Meetings - 
+        https://www.scstatehouse.gov/meetings.php?chamber=H
+        https://www.scstatehouse.gov/meetings.php?chamber=S
+        https://www.scstatehouse.gov/meetings.php
+
+    Each comitte has a zero-length anchor tag listing a 5 digit? meeting id
+        looking at 
+        https://www.scstatehouse.gov/agendas/125j13471.pdf,
+        it seems taht replacing the last 5 digits may lead to the agenda notes.
+
+
+Datatypes
+
+    Bill lifecycle
+        Proposed by a chamber
+        Vote to send to comittee - track main chamber
+        Comitte Meetings - track comittee agendas
+        Vote on Floor - track main chamber
+
+
+

@@ -1,0 +1,169 @@
+<!-- THIS WAS DOWNLOADED FROM scstatehouse.gov -->
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bill Status Demo - v1</title>
+
+<!--<script type="text/javascript" src="/js/jquery-1.10.1.min.js"></script>-->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    
+  $('.billstatusholder').on('click', function(i, val){
+      return;
+      console.log('test')
+      if ($(this).find('#billstatusWrapper').hasClass('billstatusWrapper-min')){
+           $(this).find('#billstatusWrapper').removeClass('billstatusWrapper-min')
+           $(this).animate({ 'zoom': 1, 'width': '100%' }, 200).css('float', 'none');
+      } else {
+           $(this).find('#billstatusWrapper').addClass('billstatusWrapper-min');
+           
+           $(this).animate({ 'zoom': .8, 'width': '50%' }, {
+                            queue: false,
+                            duration: 200,
+                            easing: 'linear'
+                          }).css('float', 'right');
+           
+            /*
+            $(this).css({
+              'zoom': .3,
+              'width': '40% !important',
+              'float': 'right'
+            }).css('width', '20% !important').css('zoom', '.8 !important').css('float', 'right !important');
+             */
+      } 
+  });
+   
+});
+
+</script>
+
+<style>
+
+
+
+
+.bill-list-item:not(:last-of-type) { border-bottom: 2px solid black; padding-bottom:20px; }
+
+#billstatusWrapper{width: 100%;height:110px;text-align:left;border:0 solid black !important; margin-top: 30px; margin-bottom: 30px; margin-left:150px;}
+
+#billstatusWrapper #midline{width:100%;border:0;height:3px;background-color:black;position:absolute;margin-top:57px;left:10%; }
+#billstatusWrapper div{margin:0;padding:0;}
+#billstatusWrapper .billStatus-section-blocks{display:inline-block;width:10%;border:0 solid black;height:110px;margin:0;padding:0;position:relative;vertical-align:top;margin:-3px}
+#billstatusWrapper .billStatus-section-blocks.section-block-8{ margin-left:-1px}
+#billstatusWrapper .circle-item{position:absolute;background-color:white;border-radius:50%;height:20px;width:20px;text-align:center;line-height:2em;font-size:80%;font-weight:normal;font-family:verdana;border:2px solid gray!important;top:44%;left:40%;background-color:white;z-index:5; text-align: center; }
+#billstatusWrapper .splitBlock-circle-s{position:absolute;top:-4% !important;}
+#billstatusWrapper .splitBlock-circle-h{position:absolute;top:86% !important;}
+#billstatusWrapper .section-block-1 .circle-item{left:0!important}
+#billstatusWrapper .section-block-8 .circle-item{left:100%!important}
+#billstatusWrapper .splitBlock{border:2px solid black;width:100%;height:90%;margin-top:5%;background-color:white; }
+#billstatusWrapper .splitBlock1{border-radius:.8em 0 0 .8em;border-right:0; border-radius: 0px; border-left: 0px;}
+#billstatusWrapper .splitBlock2{border-radius:0;border-right:0;border-left:0}
+#billstatusWrapper .splitBlock3{border-radius:0 .8em .8em 0;border-right:2px solid black;border-left:0}
+#billstatusWrapper .splitBlock4{border-radius:.8em .8em .8em .8em;border-right:2px solid black}
+
+.section-block-1 { opacity: 0 !important; }
+
+#billstatusWrapper .circleLabels { position: absolute; z-index: 10; left: 0px; border: 0px solid blue; width: 100%; height: auto; vertical-align: bottom; font-weight: normal; font-size: 10px; font-family: verdana, arial, helvetica;  text-align: center; line-height: .9em; }
+#billstatusWrapper .circleLabel-S { top: 20px; }
+#billstatusWrapper .circleLabel-H { bottom: 16px; }
+
+#billstatusWrapper .circleLabel-prefile { top: 35px; left: -30%; border: 0px solid black; height: 20px; }
+#billstatusWrapper .circleLabel-act { top: 35px; margin-left: 60%; border: 0px solid black; height: 20px;  border: 0px solid blue; }
+#billstatusWrapper .circleLabel-gov.circleLabels, #billstatusWrapper .circleLabel-rat.circleLabels { top: 35px; border: 0px solid black; height: 20px; }
+
+.billstatusWrapper-min { height: 70px !important;  } 
+.billstatusWrapper-min #midline { margin-top: 40px !important; height: 1px !important; }
+.billstatusWrapper-min .billStatus-section-blocks { height: 70px !important; }
+.billstatusWrapper-min .circleLabels { display: none !important; }
+.billstatusWrapper-min .circle-item { height: 15px !important; width: 15px !important; }
+.billstatusWrapper .circleLabel-prefile { top: 22px !important; }
+.billstatusWrapper .circleLabel-act { top: 22px !important; }
+.billstatusWrapper .circle-item { top: 2px !important; }
+.billstatusWrapper .splitBlock{ border: 1px solid black !important; }
+.billstatusWrapper .splitBlock1{border-radius:.8em 0 0 .8em;border-right:0}
+.billstatusWrapper .splitBlock2{border-radius:0;border-right:0;border-left:0}
+.billstatusWrapper .splitBlock3{border-radius:0 .8em .8em 0;border-right:2px solid black !important; border-left:0}
+.billstatusWrapper .splitBlock4{border-radius:.8em .8em .8em .8em;border-right:1px solid black !important;}
+
+
+
+.billTrackBody.billTrackBodyS { position: absolute; top: -2px; height: 20px; width: 210%; border: 0px solid gray; left: -220%; font-family: verdana; font-weight: bold; font-size: 13px;  }
+.billTrackBody.billTrackBodyH { position: absolute; bottom: -6px; height: 20px; width: 210%; border: 0px solid gray; left: -220%; font-family: verdana; font-weight: bold; font-size: 13px;  }
+
+.splitBlock1 .circle-item { left: -1% !important; }
+.section-block-2 .circleLabels { left: -35% !important; border: 1px solid red; }
+.disclaimer-text { width: 90%; max-width: 800px; margin: 0 auto; color: #831224; text-align: center; padding:6px; border: 1px solid gray; border-radius: .6em; margin-top:10px; display:none; font-size: .8em; font-family: verdana; }
+
+
+
+</style>
+
+</head>
+<body>
+
+<div id="billstatusWrapper">
+
+   <!-- <div id="midline">&nbsp;</div> -->
+   <div class="billStatus-section-blocks section-block-1">
+      <span class="circleLabel-prefile circleLabels">Prefiled</span>
+      <span class="circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+      <div id="midline"><img src="/images/blank_black.png" style="border: 0px solid red; width: 100%; height: 100%;"></div>
+   </div>
+
+   <div class="billStatus-section-blocks section-block-2">
+   <div class="billTrackBody billTrackBodyS">SC Senate <span style="letter-spacing: -.05em">>></span></div>
+      <span class="circleLabel-S circleLabels">Introduced</span>
+      <div class="splitBlock splitBlock1">
+         <span class="splitBlock-circle splitBlock-circle-s circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+         <span class="splitBlock-circle splitBlock-circle-h circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+      </div>
+      <span class="circleLabel-H circleLabels">Introduced</span>
+   <div class="billTrackBody billTrackBodyH" style="">SC House <span style="letter-spacing: -.05em">>></span></div>
+   </div>
+   <div class="billStatus-section-blocks section-block-3">
+      <span class="circleLabel-S circleLabels">Committee</span>
+      <div class="splitBlock splitBlock2">
+         <span class="splitBlock-circle splitBlock-circle-s circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+         <span class="splitBlock-circle splitBlock-circle-h circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+      </div>
+      <span class="circleLabel-H circleLabels">Committee</span>
+   </div>
+   <div class="billStatus-section-blocks section-block-4">
+      <span class="circleLabel-S circleLabels">Passed</span>
+      <div class="splitBlock splitBlock3">
+         <span class="splitBlock-circle splitBlock-circle-s circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+         <span class="splitBlock-circle splitBlock-circle-h circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+      </div>
+      <span class="circleLabel-H circleLabels">Passed</span></div><div class="billStatus-section-blocks section-block-5">
+      <span class="circleLabel-rat circleLabels">Ratified</span>
+      <span class="circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span><div id="midline"><img src="/images/blank_black.png" style="border: 0px solid red; width: 100%; height: 100%;"></div>
+   </div>
+
+   <div class="billStatus-section-blocks section-block-6">
+      <span class="circleLabel-gov circleLabels">Governor</span>
+      <span class="circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+      <div id="midline"><img src="/images/blank_black.png" style="border: 0px solid red; width: 100%; height: 100%;"></div>
+   </div>
+
+   <div class="billStatus-section-blocks section-block-7">
+      <span class="circleLabel-S circleLabels">Veto Action</span>
+      <div class="splitBlock splitBlock4">
+         <span class="splitBlock-circle splitBlock-circle-s circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+         <span class="splitBlock-circle splitBlock-circle-h circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+      <span class="circleLabel-H circleLabels">Veto Action</span>
+      </div>
+   </div><div class="billStatus-section-blocks section-block-8">
+      <span class="circleLabel-act circleLabels">Act</span>
+      <span class="circle-item"><img src="/images/blank_white.png" style="border: 0px solid red; width: 100%; height: 100%; border-radius: 50%;"></span>
+      <div id="midline"><img src="/images/blank_black.png" style="border: 0px solid red; width: 100%; height: 100%;"></div>
+   </div>
+
+</div>
+
+
+</body>
+</html>
