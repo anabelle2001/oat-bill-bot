@@ -1,6 +1,6 @@
-# agenda.py
+# /scrapers/meetings.py
 
-For demo data, see /scrapers/agenda-example-data.html, which was taken from [june 30, 2021 archive.org snapshot][1] of 
+For demo data, see /doc/notes/meetings-scraper-demo-data.html, which was taken from [june 30, 2021 archive.org snapshot][1] of 
 <https://scstatehouse.gov/meetings.php>
 
 ## Meeting Format
