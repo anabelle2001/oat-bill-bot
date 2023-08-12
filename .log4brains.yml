@@ -1,0 +1,5 @@
+project:
+  name: oatbill-bot
+  tz: America/New_York
+  adrFolder: ./doc/adr
+  packages: []
