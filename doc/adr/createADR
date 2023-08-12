@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+cp ./template.md "./$(date +%F) name-of-adr.md"
