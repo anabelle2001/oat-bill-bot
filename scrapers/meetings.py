@@ -1,50 +1,82 @@
 #!/usr/bin/python3
-
 import requests
 import json 
 from bs4 import BeautifulSoup as bs
+from dataclasses import dataclass
 
+@dataclass
+class Meeting:
+    MID: int
+    canceled: bool
+    starts: str
+    room: str
+    revisions: [str]
 
-url = "https://www.scstatehouse.gov/meetings.php"
-response = requests.get(url)
-soup = bs(response.text,'html.parser')
+    #Used to split the scraping code into two parts.
+    #We break off MID and startDate because they
+    
+    def __init__(self, MID, startDate, sourceUL):
+        pass
 
-# def createSession(baseURL,datecode):
-# 	handshakeURL = f'https://{baseURL}/StudentRegistrationSsb/ssb/term/termSelection?mode=search'
-# 	auth_session = requests.Session()
-# 	auth_response = auth_session.get(handshakeURL)
-# 	auth_response_parser = BeautifulSoup(auth_response.text,'html.parser')
-# 	auth_token = auth_response_parser.find('meta',{'name':'synchronizerToken'}).attrs['content']
+def scrape(response) -> [Meeting]:
+    soup = bs(response.text,'html.parser')
+    contentSection = soup.find(id="contentsection")
+    ul_days = contentSection.findChildren("ul")
 
-# 	final_headers = {
-# 		'Accept':'application/json, text/javascript, */*; q=0.01',
-# 		'Accept-Encoding':'gzip, deflate, br',
-# 		'Accept-Language':'en-CA,en-GB;q=0.9,en-US;q=0.8,en;q=0.7',
-# 		'Cookie':f'JSESSIONID={auth_session.cookies["JSESSIONID"]}',
-# 		'Connection':'keep-alive',
-# 		'Host':baseURL,
-# 		'Referer':(
-# 			f'https://{baseURL}/StudentRegistrationSsb/ssb/classSearch/classSearch' 
-# 		),
-# 		'User-Agent':(
-# 			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-# 			'(KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36'
-# 		),
-# 		'X-Synchronizer-Token':auth_token,
-# 		'X-Requested-With':'XMLHttpRequest',
-# 	}
-	
-# 	provisional_headers = {
-# 		** final_headers,
-# 		'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
-# 		'Accept':'*/*',
-# 	}
+    def expectedItem():
+        """
+        Keeps track of whether or not an anchor <a> tag or a list item <li>
+        tag is expected to occour next
 
-# 	auth_session.post(
-# 		f'https://{baseURL}/StudentRegistrationSsb/ssb/term/search?mode=search',
-# 		data=f'term={datecode}&studyPath=&studyPathText=&startDatepicker=&endDatepicker=',
-# 		headers=provisional_headers
-# 	)
+        returns "a" if the next tag is expected to be an anchor tag
+        returns "li" if the next tag is expected to be a list item tag
 
-# 	auth_session.headers = final_headers
-# 	return auth_session
+        throws error if it's unclear which should come next.
+        
+        """
+        
+        if len(anchors) == len(listItems):
+            return "a"
+        if len(anchors) == len(listItems) + 1:
+            return "li"
+        raise Exception(f"Couldn't parse HTML - too many <{'a'if len(anchors) > len(listItems) else 'li'}> tags")
+
+    meetings = []
+
+    for ul_day in ul_days:
+        startDate = ul_days.span
+        MID = None #Meeting ID
+
+        for child in ul_day.children:
+            if child.name == "a":
+                #Ensure we don't have duplicate anchor elements
+                if MID is not None: raise RuntimeError (
+                    "Didn't find <ul> after <a> tag containing meeting id"
+                )
+
+                #Save the Meeting ID
+                MID = child.attrs.name
+
+            elif child.name == "ul":
+                #Ensure we have a meeting ID
+                if MID is None: raise RuntimeError (
+                    "Didn't find <a> tag containing meeting id before <ul> tag"
+                    "containing meeting details."
+                )
+                
+                #create the meeting object
+                meetings.append(Meeting(
+                    MID,
+                    startDate,
+                    sourceUL=child
+                ))
+
+                #re-null meeting ID
+                MID = None
+    
+    return meetings
+        
+
+    meetings = []
+    for meetingID,meetingLI,meetingDate in zip(anchors,listItems,dates):
+        meetings
