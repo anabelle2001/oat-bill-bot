@@ -1,6 +1,6 @@
 CREATE TABLE rep (
-    RID  INTEGER,
-    repName varchar(64),
+    RID     INTEGER,
+    repName VARCHAR(64),
 
     PRIMARY KEY (RID)
 );
@@ -8,7 +8,7 @@ CREATE TABLE rep (
 CREATE TABLE repContact (
     RID          INTEGER,
     contact      VARCHAR(128), --Email,Phone,Address,etc.
-    description VARCHAR(32),
+    description  VARCHAR(32),
 
     PRIMARY KEY (RID,contact),
     FOREIGN KEY (RID) REFERENCES rep(RID)
@@ -84,11 +84,21 @@ CREATE TABLE billSubscriber (
 );
 
 CREATE TABLE meeting (
-    ID      INTEGER, --lifted from HTML
-    starts  CHAR(20),            --YYYY-MM-DD HH:MM:SS. 
-    room    varchar(32),
-    comment varchar(128),
-    --- We should probably link this to bills and/or committees. ---
+    MID      INTEGER,     --lifted from HTML
+    starts   CHAR(20),    --YYYY-MM-DD HH:MM:SS. 
+    room     VARCHAR(32),
+    comment  VARCHAR(128),
+    canceled BOOLEAN,
+    -- We should probably link this to bills and/or committees, but that's
+    -- a bit out of scope at the moment
 
     PRIMARY KEY ID
+)
+
+CREATE TABLE agenda (
+    url           VARCHAR(256),
+    MID           INTEGER,
+    firstNoticed  DATE,
+
+    FOREIGN KEY (MID) REFERENCES meeting(MID)
 )
