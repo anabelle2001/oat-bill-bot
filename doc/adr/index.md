@@ -21,20 +21,13 @@ ADRs are usefull, in part, because:
 In fact, the developers manage this documentation directly with markdown files located next to their code, so it is more convenient for them to keep it up-to-date.
 You can browse the ADRs by using the left menu or the search bar.
 
-The typical workflow of an ADR is the following:
-
-![ADR workflow](/l4b-static/adr-workflow.png)
-
 The decision process is entirely collaborative and backed by pull requests.
 
 ## More information
-
-- [Log4brains documentation][2]
 - [What is an ADR and why should you use them][3]
 - [ADR GitHub organization][4]
 
 
 [1]: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions.html
-[2]: https://github.com/thomvaill/log4brains/tree/master#readme
 [3]: https://github.com/thomvaill/log4brains/tree/master#-what-is-an-adr-and-why-should-you-use-them
 [4]: https://adr.github.io/
