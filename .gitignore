@@ -1,1 +1,3 @@
 .vagrant
+*.cypthon
+__pycache__
