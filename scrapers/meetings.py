@@ -27,8 +27,8 @@ class Meeting:
     ) -> 'Meeting': #Can't reference meeting before completed definition,
                     #This fixes that.
 
-        firstChild: bs4.Tag = islice(sourceLI.children,1)
-    
+        firstChild: bs4.Tag = list(sourceLI.children)[0]
+        
         assert \
             firstChild.name == "span", \
             ("Expected first child of <li> tag to be a <span> containing the "
@@ -50,7 +50,7 @@ class Meeting:
         starts = f"{hr:02}:{timeMatch.group(2)}"
 
 
-        agendaURL = sourceLI.select("> div > a").href
+        agendaURL = sourceLI.selectOne("div > a").href
         agendaURL = f"https://scstatehouse.gov{agendaURL}"
 
         return Meeting(
@@ -67,7 +67,7 @@ def scrape(responseText) -> [Meeting]:
     meetings = []
 
     for ul_day in ul_days:
-        startDate = ul_days.span
+        startDate = ul_day.span
         MID = None #Meeting ID
 
         for child in ul_day.children:
@@ -78,7 +78,7 @@ def scrape(responseText) -> [Meeting]:
                 )
 
                 #Save the Meeting ID
-                MID = child.attrs.name
+                MID = child.attrs["name"]
 
             elif child.name == "li":
                 #Ensure we have a meeting ID
