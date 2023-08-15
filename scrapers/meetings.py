@@ -24,7 +24,8 @@ class Meeting:
         MID:       str,
         startDate: str,
         sourceLI:  bs4.Tag
-    ) -> Meeting:
+    ) -> 'Meeting': #Can't reference meeting before completed definition,
+                    #This fixes that.
 
         firstChild: bs4.Tag = islice(sourceLI.children,1)
     
@@ -58,8 +59,8 @@ class Meeting:
             agendaURL
         )
 
-def scrape(response) -> [Meeting]:
-    soup = bs4.BeautifulSoup(response.text,'html.parser')
+def scrape(responseText) -> [Meeting]:
+    soup = bs4.BeautifulSoup(responseText,'html.parser')
     contentSection = soup.find(id="contentsection")
     ul_days = contentSection.findChildren("ul")
 
