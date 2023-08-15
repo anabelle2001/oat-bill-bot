@@ -66,7 +66,7 @@ def testMeetingEquals( actual: meetings.Meeting,
         if not testPassed: issues.append(errorMessage)
 
     numIssues = len(issues)
-    if numIssues is 0: return
+    if numIssues == 0: return
     errorStr = (
         f"`class Meeting()` Equality Test Failure - Encountered {numIssues} non-matching fields:\n\n"
         "\n".join(
