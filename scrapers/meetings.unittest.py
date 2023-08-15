@@ -1,26 +1,51 @@
 import unittest
 import meetings
 
-def assertMeetingEquals( actual: meetings.Meeting,
-                         expected: meetings.Meeting ):
-    def testProp(meetingActual:   meetings.Meeting,
-                 meetingExpected: meetings.Meeting,
-                 prop:            str,
-                 naturalPropName: str = None        ) -> (bool,str):
-        """
-        Tests if two meeting objects have the same value for property x.
-        If they don't, returns (False,explanation:string).
-        If they do, returns (True,""),
-        """
+def testMeetingProp(
+    meetingActual:   meetings.Meeting,
+    meetingExpected: meetings.Meeting,
+    prop:            str,
+    naturalPropName: str = None        
+) -> (bool,str):
+    """
+    Helper method used to test if two meetings share the same property `prop`
 
-        if naturalPropName == None:
-            naturalPropName = prop
-            
-        if expected[prop] != actual[prop]:
-            issues.append(
-                f"meetings don't have the same {naturalPropName}"
-                f" - expected {expected[prop]}, got {actual[prop]}"
-            )
+    - helps keep testMeetingEquals() [D.R.Y.] - used to compare a property
+      and return an explanatory string if the props aren't equal.
+      [D.R.Y]: https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+    
+    TLDR:
+    If Meeting()s are equal:
+        return (True,"").
+    else:
+        return (False,explanation:string).
+    """
+
+    if naturalPropName == None:
+        naturalPropName = prop
+        
+    if expected[prop] != actual[prop]:
+        issues.append(
+            f"meetings don't have the same {naturalPropName}"
+            f" - expected {expected[prop]}, got {actual[prop]}"
+        )
+    # End of helper method testProp(...)
+
+def testMeetingEquals( actual: meetings.Meeting,
+                       expected: meetings.Meeting ):
+    """
+    - Used to compare two `class Meeting():` objects
+
+    - Calls unittest.TestCase.assertFalse(True, details) if they are unequal
+    
+    - `details` Provides details on which fields differ between actual and  
+      expected meeting objects
+    
+    - Suggestion to improve readibility:
+      This function should probably be split in two - one to get the list of 
+      differeing props, another to assemple the error str.
+    """
+    
     issues = []
     for (prop,naturalPropName) in [
         ("MID","Meeting ID"),
@@ -40,10 +65,16 @@ def assertMeetingEquals( actual: meetings.Meeting,
 
     numIssues = len(issues)
     if numIssues is 0: return
-    errorStr = ""
-    
-        for (issueNumber,issue) in enumerate(issues):
-            print("{issue}:")
+    errorStr = (
+        f"`class Meeting()` Equality Test Failure - Encountered {numIssues} non-matching fields:\n\n"
+        "\n".join(
+            [f"{issueNumber}: {issue}" for issueNumber,issue in issues
+        ])
+    )
+
+    #Pass the error to unittest
+    #TODO: this next line feels clumsy. is there a better way?
+    unittest.TestCase.assertTrue(False,errorStr)
             
 class testMeetings(unittest.TestCase):
     def testOnSnapshot20210630070143(self):
@@ -101,10 +132,8 @@ class testMeetings(unittest.TestCase):
             ),
         ]
    
-        assert(
-            "Test meeting 1",
-            expectedResult0 == results[0]
-        )
+        for r,e in zip(results,expectedResults):
+            testMeetingEquals(r,e)
         
 if __name__ == '__main__':
     unittest.main()
