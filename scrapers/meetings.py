@@ -28,11 +28,11 @@ class Meeting:
 
         firstChild: bs4.Tag = islice(sourceLI.children,1)
     
-        assert(
-            firstChild.name == "span",
+        assert \
+            firstChild.name == "span", \
             ("Expected first child of <li> tag to be a <span> containing the "
             f"time. got a <'{firstChild.name}'> instead")
-        )
+        
 
         
         timeMatch: re.Match = re.match(
@@ -40,10 +40,9 @@ class Meeting:
             firstChild.text
         )
 
-        assert(
-            timeMatch is not None,
+        assert \
+            timeMatch is not None, \
             ("Expected <span> to contain 12-hour time formatted like '9:15 am'" f", instead got <span>'{firstChild.text}'</span>")
-        )
 
         isPM = timeMatch.group(3) == "pm"
         hr = int(timeMatch.group(1)) + (12 if isPM else 0)
