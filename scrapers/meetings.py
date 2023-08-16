@@ -10,11 +10,11 @@ import dateparser
 @dataclass
 class Meeting:
     MID: int
-    canceled: bool
-    starts: str
-    room: str
-    agendaURL: str
-    revisions: [str]
+    canceled: bool = False
+    starts: str = "???"
+    room: str = "???"
+    agendaURL: str = "https://null.invalid/agenda.pdf"
+    revisions: [str] = None
 
     #Used to split the scraping code into two parts.
     #We break off MID and startDate because they
