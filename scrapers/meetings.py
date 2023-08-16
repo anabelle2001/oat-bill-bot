@@ -48,9 +48,12 @@ class Meeting:
         hr = int(timeMatch.group(1)) + (12 if isPM else 0)
         starts = f"{hr:02}:{timeMatch.group(2)}"
 
+        agendaURLTag = sourceLI.select_one("div > a")
 
-        agendaURL = sourceLI.selectOne("div > a").href
-        agendaURL = f"https://scstatehouse.gov{agendaURL}"
+        assert agendaURLTag is not None, \
+            "Could not find `> div > a` (containing agenda url) in meeting <li>"
+        
+        agendaURL = f"https://scstatehouse.gov{agendaURLTag.attrs['href']}"
 
         return Meeting(
             MID,
