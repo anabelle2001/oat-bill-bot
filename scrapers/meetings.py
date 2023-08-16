@@ -41,8 +41,7 @@ class Meeting:
             firstChild.text
         )
 
-        assert \
-            timeMatch is not None, \
+        assert timeMatch is not None, \
             ("Expected <span> to contain 12-hour time formatted like '9:15 am'" f", instead got <span>'{firstChild.text}'</span>")
 
         isPM = timeMatch.group(3) == "pm"
