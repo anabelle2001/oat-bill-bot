@@ -28,8 +28,11 @@ class Meeting:
     ) -> 'Meeting': #Can't reference meeting before completed definition,
                     #This fixes that.
 
+        # We expect for the first child of the <li> tag to be a <span> 
+        # containing the time.
         firstChild: bs4.Tag = list(sourceLI.children)[0]
         
+        # This line ensures that the first child is a span with the time.
         assert \
             firstChild.name == "span", \
             ("Expected first child of <li> tag to be a <span> containing the "
@@ -37,11 +40,18 @@ class Meeting:
         
         givenTimeSTR = firstChild.text
         
+
+        # Here we try to match the given time to the '9:05 PM' format.
+        # timeMatch.match(0) is the 12-hour hour
+        #          .match(1) is the minute
+        #          .match(2) marks am or pm
         timeMatch: re.Match = re.match(
             r"(\d{1,2}):(\d{2}) ([ap]m)",
             firstChild.text
         )
 
+        # True if timeStr is not formatted like '9:05 pm'
+        # if False, time matched. we then change it from 12 hour to 24 hour.
         if timeMatch is None:
             print("Warning:\nExpected 12-hour time formatted like '9:15 am';"
                  f"got <span>'{firstChild.text}'</span> instead.")
