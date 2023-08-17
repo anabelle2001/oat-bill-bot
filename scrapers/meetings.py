@@ -68,10 +68,16 @@ class Meeting:
 
         agendaURLTag = sourceLI.select_one("div > a")
 
-        assert agendaURLTag is not None, \
-            "Could not find `> div > a` (containing agenda url) in meeting <li>"
+        agendaURL = ''
+        if agendaURLTag is None:
+            print(
+                "Skipping agenda URL: Could not find `> div > a` (containing" "agenda url) in meeting <li>."
+            )
+        else:
+            relativeURL = agendaURLTag.attrs['href']
+            if relativeURL is not None and relativeURL != '':
+                agendaURL = f"https://scstatehouse.gov{relativeURL}"
         
-        agendaURL = f"https://scstatehouse.gov{agendaURLTag.attrs['href']}"
 
         return Meeting(
             MID,
