@@ -12,7 +12,7 @@ def testMeetingProp(
     """
     Helper method used to test if two meetings share the same property `prop`
 
-    - helps keep testMeetingEquals() [D.R.Y.] - used to compare a property
+    - helps keep explainMeetingEquality() [D.R.Y.] - used to compare a property
       and return an explanatory string if the props aren't equal.
       [D.R.Y]: https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
     
@@ -26,28 +26,27 @@ def testMeetingProp(
     if naturalPropName == None:
         naturalPropName = prop
         
-    if expected[prop] != actual[prop]:
-        issues.append(
+    if meetingExpected.__dict__[prop] != meetingActual.__dict__[prop]:
+        return(
+            False,
             f"meetings don't have the same {naturalPropName}"
-            f" - expected {expected[prop]}, got {actual[prop]}"
+            f" - expected '{meetingExpected.__dict__[prop]}', got "
+            f"'{meetingActual.__dict__[prop]}'"
         )
+    return True,""
     # End of helper method testProp(...)
 
-def testMeetingEquals( actual: meetings.Meeting,
-                       expected: meetings.Meeting ):
+def explainMeetingEquality( actual: meetings.Meeting,
+                            expected: meetings.Meeting ) -> str:
     """
-    - Used to compare two `class Meeting():` objects
+    Used to compare two `class Meeting():` objects
+    - if they are unequal, returns a string explaining why
+    """
 
-    - Calls unittest.TestCase.assertFalse(True, details) if they are unequal
-    
-    - `details` Provides details on which fields differ between actual and  
-      expected meeting objects
-    
-    - Suggestion to improve readibility:
-      This function should probably be split in two - one to get the list of 
-      differeing props, another to assemple the error str.
-    """
-    
+    ## Suggestion to improve readibility:
+    # This function should probably be split in two - one to get the list of 
+    # differeing props, another to assemple the error str.
+
     issues = []
     for (prop,naturalPropName) in [
         ("MID","Meeting ID"),
@@ -57,7 +56,7 @@ def testMeetingEquals( actual: meetings.Meeting,
         ("room","Room"),
         ("agendaURL","Agenda URL"),
     ]:
-        testPassed, errorMessage = testProp(
+        testPassed, errorMessage = testMeetingProp(
             actual,
             expected,
             prop,
@@ -66,17 +65,16 @@ def testMeetingEquals( actual: meetings.Meeting,
         if not testPassed: issues.append(errorMessage)
 
     numIssues = len(issues)
-    if numIssues == 0: return
+    if numIssues == 0: return None
     errorStr = (
-        f"`class Meeting()` Equality Test Failure - Encountered {numIssues} non-matching fields:\n\n"
-        "\n".join(
-            [f"{issueNumber}: {issue}" for issueNumber,issue in issues
-        ])
+        f"`class Meeting()` Equality Test Failure - Encountered {numIssues} non-matching fields:\n\n"+
+        "\n".join( [
+            f"{issueNumber}: {issue}"
+            for issueNumber,issue in enumerate(issues)
+        ] )
     )
 
-    #Pass the error to unittest
-    #TODO: this next line feels clumsy. is there a better way?
-    unittest.TestCase.assertTrue(False,errorStr)
+    return errorStr
             
 class testMeetings(unittest.TestCase):
     def testOnSnapshot20210630070143(self):
@@ -134,8 +132,37 @@ class testMeetings(unittest.TestCase):
             ),
         ]
    
-        for r,e in zip(results,expectedResults):
-            testMeetingEquals(r,e)
+        assert len(results) == len(expectedResults),\
+            (f"Expected to parse {len(expectedResults)} meetings, "
+             f"got back {len(results)} instead")
+
+        for i,result,expectedResult in zip(
+            range(len(results)),
+            results,
+            expectedResults
+        ):
+            equalByBuiltinMethod = result == expectedResult
+            testerResults = explainMeetingEquality(result,expectedResult)
+
+            # Case 1, both the bultin __eq__ and explainMeetingEquality pass this 
+            # meeting, so we continue
+            if equalByBuiltinMethod and testerResults == "": continue
+
+            # Case 2: tME errors - meaning we have an error str to print for
+            # debugging
+            if testerResults != "":
+                raise AssertionError(f"Error in results[{i}]:\n{testerResults}")
+
+            # Case 3: __eq__ errors, but tME passes - we need to serve the user 
+            # a generic error in this case
+            raise AssertionError(
+                f"\nError in test #{i}:\n"
+                "Expected meeting differed from actual meeting.\n"
+                "Furthermore, tester function explainMeetingEquality() failed "
+                "to catch that the meetings were different. This means that "
+                "there is not only an error with the code parsing the meetings"
+                ", but also with the function that tests that code."
+            )
         
 if __name__ == '__main__':
     unittest.main()
