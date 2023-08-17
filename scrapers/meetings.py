@@ -38,7 +38,11 @@ class Meeting:
             ("Expected first child of <li> tag to be a <span> containing the "
             f"time. got a <'{firstChild.name}'> instead")
         
-        givenTimeSTR = firstChild.text
+        # this var stores the time provided by scstatehouse.gov
+        # usually it's in a format like: '9:05 PM', but sometimes it's 
+        # something less precise, like '15 minutes after the senate adjourns.'
+
+        timeStr = firstChild.text
         
 
         # Here we try to match the given time to the '9:05 PM' format.
@@ -47,15 +51,16 @@ class Meeting:
         #          .match(2) marks am or pm
         timeMatch: re.Match = re.match(
             r"(\d{1,2}):(\d{2}) ([ap]m)",
-            firstChild.text
+            timeStr
         )
 
         # True if timeStr is not formatted like '9:05 pm'
         # if False, time matched. we then change it from 12 hour to 24 hour.
         if timeMatch is None:
+            starts = f"{startDate} '{timeStr}'"
             print("Warning:\nExpected 12-hour time formatted like '9:15 am';"
-                 f"got <span>'{firstChild.text}'</span> instead.")
-            starts = f"{startDate} '{}'"
+                 f"got <span>'{firstChild.text}'</span> instead.\n"
+                 f"Writing a time value of {starts} instead")
         else:
             isPM = timeMatch.group(3) == "pm"
             hr = int(timeMatch.group(1)) + (12 if isPM else 0)
