@@ -58,7 +58,7 @@ class Meeting:
         # if False, time matched. we then change it from 12 hour to 24 hour.
         if timeMatch is None:
             starts = f"{startDate} '{timeStr}'"
-            print("Warning:\nExpected 12-hour time formatted like '9:15 am';"
+            print("Warning: Expected 12-hour time formatted like '9:15 am';"
                  f"got <span>'{firstChild.text}'</span> instead.\n"
                  f"Writing a time value of {starts} instead")
         else:
@@ -98,7 +98,7 @@ def scrape(responseText) -> [Meeting]:
     meetings = []
 
     for ul_day in ul_days:
-        startDate = ul_day.span
+        startDate = ul_day.span.text
         MID = None #Meeting ID
 
         for child in ul_day.children:
