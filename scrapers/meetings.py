@@ -34,19 +34,21 @@ class Meeting:
             ("Expected first child of <li> tag to be a <span> containing the "
             f"time. got a <'{firstChild.name}'> instead")
         
-
+        givenTimeSTR = firstChild.text
         
         timeMatch: re.Match = re.match(
             r"(\d{1,2}):(\d{2}) ([ap]m)",
             firstChild.text
         )
 
-        assert timeMatch is not None, \
-            ("Expected <span> to contain 12-hour time formatted like '9:15 am'" f", instead got <span>'{firstChild.text}'</span>")
-
-        isPM = timeMatch.group(3) == "pm"
-        hr = int(timeMatch.group(1)) + (12 if isPM else 0)
-        starts = f"{hr:02}:{timeMatch.group(2)}"
+        if timeMatch is None:
+            print("Warning:\nExpected 12-hour time formatted like '9:15 am';"
+                 f"got <span>'{firstChild.text}'</span> instead.")
+            starts = f"{startDate} '{}'"
+        else:
+            isPM = timeMatch.group(3) == "pm"
+            hr = int(timeMatch.group(1)) + (12 if isPM else 0)
+            starts = f"{startDate} {hr:02}:{timeMatch.group(2)}"
 
         agendaURLTag = sourceLI.select_one("div > a")
 
