@@ -10,6 +10,7 @@ import dateparser
 @dataclass
 class Meeting:
     MID: int
+    title: str
     canceled: bool = False
     starts: str = "???"
     room: str = "???"
