@@ -78,11 +78,16 @@ class Meeting:
             if relativeURL is not None and relativeURL != '':
                 agendaURL = f"https://scstatehouse.gov{relativeURL}"
         
+        # If the word canceled is in the meeting description, it's probably 
+        # canceled.
+
+        canceled = re.match(r"cancell?ed",sourceLI.text.lower()) is not None
 
         return Meeting(
             MID,
-            starts, #TODO: add date in addition to time
-            agendaURL
+            starts,
+            agendaURL,
+            canceled
         )
 
 def scrape(responseText) -> [Meeting]:
