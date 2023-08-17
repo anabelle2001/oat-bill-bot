@@ -67,7 +67,7 @@ def explainMeetingEquality( actual: meetings.Meeting,
     numIssues = len(issues)
     if numIssues == 0: return None
     errorStr = (
-        f"`class Meeting()` Equality Test Failure - Encountered {numIssues} non-matching fields:\n\n"+
+        f"`class Meeting()` Equality Test Failure - Encountered {numIssues} non-matching fields:\n"+
         "\n".join( [
             f"{issueNumber}: {issue}"
             for issueNumber,issue in enumerate(issues)
@@ -151,7 +151,7 @@ class testMeetings(unittest.TestCase):
             # Case 2: tME errors - meaning we have an error str to print for
             # debugging
             if testerResults != "":
-                raise AssertionError(f"Error in results[{i}]:\n{testerResults}")
+                raise AssertionError(f"Error in results[{i}] - {testerResults}")
 
             # Case 3: __eq__ errors, but tME passes - we need to serve the user 
             # a generic error in this case
